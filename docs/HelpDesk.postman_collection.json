@@ -1,0 +1,14 @@
+{
+  "info": {"name": "HelpDesk Support API", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json", "description": "Local API collection for the HelpDesk assignment"},
+  "variable": [{"key":"baseUrl","value":"http://localhost:5000/api"},{"key":"token","value":""},{"key":"ticketId","value":""}],
+  "item": [
+    {"name":"Register User","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"name\": \"Demo User\",\n  \"email\": \"demo@example.com\",\n  \"password\": \"DemoPass123\"\n}"},"url":"{{baseUrl}}/auth/register"}},
+    {"name":"Login","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"email\": \"demo@example.com\",\n  \"password\": \"DemoPass123\"\n}"},"url":"{{baseUrl}}/auth/login"}},
+    {"name":"Get Current User","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":"{{baseUrl}}/auth/me"}},
+    {"name":"Create Ticket","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"title\": \"Cannot sign in\",\n  \"description\": \"I cannot sign in to my account.\",\n  \"category\": \"Account\",\n  \"priority\": \"High\"\n}"},"url":"{{baseUrl}}/tickets"}},
+    {"name":"List Tickets","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":"{{baseUrl}}/tickets?status=Open"}},
+    {"name":"Ticket Details","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":"{{baseUrl}}/tickets/{{ticketId}}"}},
+    {"name":"Add Comment","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"message\": \"Any update on this issue?\"\n}"},"url":"{{baseUrl}}/tickets/{{ticketId}}/comments"}},
+    {"name":"Admin Change Status","request":{"method":"PATCH","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"status\": \"In Progress\"\n}"},"url":"{{baseUrl}}/tickets/{{ticketId}}/status"}}
+  ]
+}

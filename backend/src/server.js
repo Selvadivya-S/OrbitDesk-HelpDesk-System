@@ -1,0 +1,16 @@
+require('dotenv').config();
+require('./events/listeners');
+const express = require('express');
+const cors = require('cors');
+const connectDB = require('./config/db');
+const { notFound, errorHandler } = require('./middleware/errors');
+const app = express();
+app.use(cors({ origin: process.env.CLIENT_URL || true }));
+app.use(express.json({ limit: '1mb' }));
+app.get('/', (req, res) => res.json({ name: 'HelpDesk API', status: 'running', docs: 'See README/API.md' }));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/tickets', require('./routes/tickets'));
+app.use('/api/notifications', require('./routes/notifications'));
+app.use(notFound); app.use(errorHandler);
+const PORT = process.env.PORT || 5000;
+connectDB().then(() => { const http=require('http').createServer(app); require('./realtime').setIO(http); http.listen(PORT,()=>console.log(`API listening on port ${PORT}`)); }).catch(err => { console.error('Database connection failed:', err.message); process.exit(1); });
